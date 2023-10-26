@@ -81,6 +81,10 @@ public class SearchEngine {
     public void search(String word) {//word that isnt wanted should be written at last.
         HashSet<String> result = new HashSet<>();
         HashSet<String> notWantedElements=new HashSet<>();
+        boolean wordExists=false;
+        int existentWordCount=0;
+        int notExistentWordCount=0;
+
 
         String[] words = word.split(",");
         for (String query : words) {
@@ -89,6 +93,7 @@ public class SearchEngine {
                 Node currentNode = bst.get(query);
                 if (currentNode != null) {
                     notWantedElements.addAll(currentNode.docList);
+                    wordExists=true;
                 }
             } else {//istediğimiz kelime ise. result empty ise ad all dicez. result empty deilse retainall dicez
                 Node currentNode = bst.get(query);
@@ -98,9 +103,20 @@ public class SearchEngine {
                     }else{
                         result.retainAll(currentNode.docList);
                     }
+                    wordExists=true;
 
                 }
             }
+            if(wordExists){
+                existentWordCount++;
+                wordExists=false;
+            }else{
+                notExistentWordCount++;
+            }
+
+        }
+        if(notExistentWordCount>0){
+            result.clear();
         }
 
         result.removeAll(notWantedElements);
