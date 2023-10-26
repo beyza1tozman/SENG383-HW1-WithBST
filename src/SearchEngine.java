@@ -6,6 +6,8 @@ import java.util.Map;
 public class SearchEngine {
     MyBinarySearchTree bst = new MyBinarySearchTree();
     String outputFilePath = "C:/Users/LENOVO/Desktop/output.txt";
+    String commandFilePath= "C:/Users/LENOVO/Desktop/command.txt";
+
 
     public void load(String filePath,ArrayList<String>docNames) {
         String docName = null;
@@ -56,10 +58,10 @@ public class SearchEngine {
 
     public void remove(String docName) {
         docName = docName.toLowerCase();
-        //traverse every node in binary search tree and remove the docname from its hashset
+
         bst.removeDocName(docName);
 
-        //current.docList.remove(docName)
+
         System.out.println("Document name is successfully removed from our structure");
 
     }
@@ -72,36 +74,40 @@ public class SearchEngine {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //empty out the binary search tree
+
         bst.removeAll();
-        //System.out.println("output file and data structure is successfully deleted!\n");
     }
 
-    public void search(String word) {
+    public void search(String word) {//word that isnt wanted should be written at last.
         HashSet<String> result = new HashSet<>();
+        HashSet<String> notWantedElements=new HashSet<>();
+
         String[] words = word.split(",");
         for (String query : words) {
             if (query.charAt(0) == '!') {
                 query = query.substring(1);
                 Node currentNode = bst.get(query);
                 if (currentNode != null) {
-                    for (String docName : currentNode.docList) {
-                        result.remove(docName);
-                    }
+                    notWantedElements.addAll(currentNode.docList);
                 }
-            } else {
+            } else {//istediğimiz kelime ise. result empty ise ad all dicez. result empty deilse retainall dicez
                 Node currentNode = bst.get(query);
                 if (currentNode != null) {
-                    for (String docName : currentNode.docList) {
-                        result.add(docName);
+                    if(result.isEmpty()){
+                        result.addAll(currentNode.docList);
+                    }else{
+                        result.retainAll(currentNode.docList);
                     }
+
                 }
-
             }
-
         }
+
+        result.removeAll(notWantedElements);
+
         System.out.println("query " + word + "\n" + result+"\n");
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFilePath,true))) {//this opens the file in append mode. and with this way we are not overwriting output files content. we are adding new lines to it.
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFilePath,true))) {
+            //this opens the file in append mode. and with this way we are not overwriting output files content. we are adding new lines to it.
             //output file boşsa direkt en başa yazabilirsin ama eğer içinde bir şeyler varsa en sonuna gelip sonuna eklemen lazım
             writer.write("query " + word + "\n" + result);
             writer.newLine();
@@ -115,6 +121,29 @@ public class SearchEngine {
         for(int i=0;i<docNames.size();i++){
             System.out.println(docNames.get(i));
         }
+
+    }
+    public void fillCommandFile(String commandFilePath){
+        //TODO command fileın içine dosyanın adını yazıcaksın
+        //sonra commandleri ekle sonuna ; koyarak
+        //bu methoddan sonra da command filedan satır satır okuyarak gerçekleştireceksin komutlarını
+
+        //kullanıcı nerede yazsın hangi dosyadan okumak istediğini ve ne zaman bunları command filea yazalım
+
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFilePath,true))) {
+
+            //sırayla gerçekleştirmek istenilen işlemler yazılınacak
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+    public void readActionsFrommCommandFile(){
+        //ilk kelime gerçekleştirmek istediği işlem. sonraki gelen o methodun içine göndereceğimiz input. ilk kelime clearsa direk clearlist methodunu çağıracak bi input yok
+
 
     }
 

@@ -5,14 +5,14 @@ public class MyBinarySearchTree {
         root = insert_Recursive(root, word);
     }
 
-    // Recursive insert function with duplicate checking
+
     public Node insert_Recursive(Node root, String word) {
         if (root == null) {
             root = new Node(word);
             return root;
         }
 
-        int comparisonResult = word.compareToIgnoreCase(root.word);
+        int comparisonResult = word.compareToIgnoreCase(root.word);//eklenicek kelimenin alfabetik olarak bi öncekine göre ne konumda olduüuna bakıyoruz
 
         if (comparisonResult < 0) {
             root.left = insert_Recursive(root.left, word);
@@ -30,46 +30,42 @@ public class MyBinarySearchTree {
         while (current != null) {
             int comparisonResult = word.compareToIgnoreCase(current.word);
 
-            if (comparisonResult == 0) {
-                // Word found, return the node
+            if (comparisonResult == 0) { // Word found, return the node
                 return current;
-            } else if (comparisonResult < 0) {
-                // Word is smaller, search in the left subtree
+            } else if (comparisonResult < 0) {// Word is smaller, search in the left subtree
                 current = current.left;
-            } else {
-                // Word is larger, search in the right subtree
+            } else { // Word is larger, search in the right subtree
                 current = current.right;
             }
         }
 
-        // Word not found, return null
-        return null;
+        return null;// Word not found, return null
     }
-    public void removeDocName(String docName) {
+    public void removeDocName(String docName) {//bstdeki her wordden o docnamei çıkarıcak. hashsetlerinden
         Node current = root;
 
         while (current != null) {
             if (current.left == null) {
-                // Process the current node (e.g., remove the docName from its hashset)
+                // process the current node (remove the docName from its hashset).sol boşsa currentten çıkart ve currentı sağa götür
                 current.docList.remove(docName);
 
                 current = current.right;
-            } else {
-                // Find the in-order predecessor
-                Node predecessor = current.left;
-                while (predecessor.right != null && predecessor.right != current) {
-                    predecessor = predecessor.right;
+            } else {//sol taraf null deilse
+                // find the in-order previousNode
+                Node previousNode = current.left;
+                while (previousNode.right != null && previousNode.right != current) {
+                    previousNode = previousNode.right;
                 }
 
-                if (predecessor.right == null) {
-                    // Set the right link of the in-order predecessor to the current node
-                    predecessor.right = current;
+                if (previousNode.right == null) {
+                    //set the right link of the in-order previousNode to the current node
+                    previousNode.right = current;
                     current = current.left;
                 } else {
-                    // Restore the right link of the in-order predecessor
-                    predecessor.right = null;
+                    // restore the right link of the in-order previousNode
+                    previousNode.right = null;
 
-                    // Process the current node (e.g., remove the docName from its hashset)
+                    // process the current node (e.g., remove the docName from its hashset)
                     current.docList.remove(docName);
 
                     current = current.right;
@@ -86,11 +82,11 @@ public class MyBinarySearchTree {
             return null;
         }
 
-        // Recursively remove the left and right subtrees
+        // recursively remove the left and right subtrees
         current.left = removeAll(current.left);
         current.right = removeAll(current.right);
 
-        // Delete the current node (you can perform any necessary cleanup here)
+        // delete the current node
         current = null;
 
         return current;

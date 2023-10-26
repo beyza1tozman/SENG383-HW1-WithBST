@@ -43,12 +43,11 @@ public class Main {
             System.out.println("Please enter 3 if you want to see the document names this file includes");
             System.out.println("Please enter 4 if you want to remove a document name from the structure.(once the doc name is removed you cannot see the name of it in the search results");
             System.out.println("Please enter 5 if you want to clear the structure and output file.");
-            System.out.println("NOTE: DON!t select option 1(load) again before clearing your data structure with 4 again!");
+
 
             System.out.println("Welcome! Please enter which option you want to execute!");
             int choice = scan.nextInt();
             scan.nextLine();
-            //if choice is not integer or greater than 5 or smth. say pls enter correct choice with a try catch block
             switch (choice) {
                 case 0:
                     seeTheNamesOfTheFiles(fileNames);
@@ -62,8 +61,9 @@ public class Main {
                     System.out.println(nameOfTheFile+" file is loaded, and all words are now organized alphabetically in our structure.");
                     break;
                 case 2:
-                    System.out.println("Please enter which word you want to search. Please enter your search query in this format \"wantedword,!notwantedword\" .Enter your words with a comma in between" +
-                            " and if you dont want to see the contained files of a word, put exclamation mark'!' at its beginning.");//istenen formatta girmezse.lütfen doğru şekilde girin die kızsın
+                    System.out.println("Enter the word you want to search for. If you are going to enter multiple words use this format='wantedword,!notwantedword'." +
+                            " \nDon't forget to seperate your words with commas and add a '!' at the beginning of the word if you want to exclude files containing that word. " );//istenen formatta girmezse kızsınm
+
                     String searchQuery = scan.nextLine();
                     searchEngine.search(searchQuery);
                     break;
